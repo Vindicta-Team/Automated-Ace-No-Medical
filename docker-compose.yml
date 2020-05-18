@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+      # override the args with a docker-compose.override.yml
+    environment:
+      STEAM_USERNAME: ENTER_YOUR_USERNAME
+      STEAM_PASSWORD: ENTER_YOUR_TOKEN
+      # cpu speed is needed by steam for some reason
+      CPU_MHZ: 2500
+    volumes:
+      - ./:/app/

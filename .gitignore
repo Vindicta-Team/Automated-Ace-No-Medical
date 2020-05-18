@@ -1,0 +1,5 @@
+__pycache__
+.vscode
+docker-compose.override.yml
+mods
+AANM
