@@ -1,17 +1,16 @@
 help:
 	@egrep "^#" Makefile
 
-# dr|docker-run
-dr: docker-run
-docker-run: 
-	docker run -v $(PWD):/app ace-no-medic 
+# db|docker-build
+db: docker-build
+docker-build:
+	docker-compose up -d --build
 
 # ba|bash-app
 ba: bash-app
 bash-app:
 	docker-compose run --rm app bash
 
-# db|docker-build
-db: docker-build
-docker-build:
-	docker build . -t ace-no-medic
+# run
+run:
+	docker-compose run --rm app sh -c "python3 main.py"
