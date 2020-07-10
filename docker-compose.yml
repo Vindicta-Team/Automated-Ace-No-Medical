@@ -1,11 +1,17 @@
-version: '3.7'
+version: '3.3'
 
 services:
   app:
     build:
       context: .
-      # override the args with a docker-compose.override.yml
+      # override the args and envs with a docker-compose.override.yml
+      args:
+        GITHUB_EMAIL: GITHUB_EMAIL
+        GITHUB_USERNAME: GITHUB_USERNAME
+        GITHUB_TOKEN: GITHUB_TOKEN
     environment:
+      GITHUB_USERNAME: GITHUB_USERNAME
+      GITHUB_TOKEN: GITHUB_TOKEN
       STEAM_USERNAME: ENTER_YOUR_USERNAME
       STEAM_PASSWORD: ENTER_YOUR_TOKEN
       # cpu speed is needed by steam for some reason
