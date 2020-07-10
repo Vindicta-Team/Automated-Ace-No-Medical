@@ -38,10 +38,6 @@ def updatemod(datas, aceZipChecksum):
     shutil.copyfile('/app/aanm-files/mod.cpp', '/tmp/repo/AANM/mod.cpp')
     shutil.copyfile('/app/aanm-files/meta.cpp', '/tmp/repo/AANM/meta.cpp')
 
-    # with open('/tmp/repo/AANM/meta.cpp', "a") as myfile:
-    #     myfile.write("appended text")
-    # content = open('filepath','r').read()
-
     # comit files
     cloned_repo.index.add(['*'])
     cloned_repo.index.commit("update-" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
