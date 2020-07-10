@@ -1,0 +1,9 @@
+__pycache__
+.vscode
+docker-compose.override.yml
+mods
+data.json
+AANM.pbo
+AANM.pbo.aanm.bisign
+AANM/aanm.bikey
+AANM/aanm.biprivatekey
