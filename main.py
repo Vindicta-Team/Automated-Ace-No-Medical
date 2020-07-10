@@ -7,6 +7,7 @@ import constants
 import datetime
 from git import Repo
 
+####### Functions
 def readDatasFromFile(filePath):
     return json.loads(open(filePath, 'rb').read())
 
@@ -17,27 +18,7 @@ def writeDatasIntoFile(filePath, datas):
 def getMd5Checksum(filePath):
     return hashlib.md5(open(filePath,'rb').read()).hexdigest()
 
-# retrieve data
-datas = readDatasFromFile(constants.JSON_FILE_DB)
-
-# clean up and update mod
-if os.path.isfile('/tmp/ace.zip'):
-    os.remove('/tmp/ace.zip')
-
-if os.path.isdir('/tmp/repo'):
-    shutil.rmtree('/tmp/repo')
-
-# get last ace version
-os.system("cd /home/steam/steamcmd && ./steamcmd.sh +login " + constants.STEAM_USERNAME + " '" + constants.STEAM_PASSWORD + "' +force_install_dir " + constants.INSTALL_DIR + " +workshop_download_item " + constants.ARMA_APPID + " " + constants.ACE_APPID + " validate +quit")
-
-# Zip and checksum it
-aceModPath = '/app/mods/steamapps/workshop/content/'+constants.ARMA_APPID+'/'+constants.ACE_APPID
-shutil.make_archive('/tmp/ace', 'zip', aceModPath)
-aceZipChecksum = getMd5Checksum('/tmp/ace.zip')
-
-# update if needed
-if datas['ace'] != aceZipChecksum:
-
+def updatemod(datas, aceZipChecksum):
     # git clone
     # // https://[USERNAME]:[TOKEN]@[GIT_ENTERPRISE_DOMAIN]/[ORGANIZATION]/[REPO].git
 
@@ -70,5 +51,33 @@ if datas['ace'] != aceZipChecksum:
     datas['ace'] = aceZipChecksum
     writeDatasIntoFile(constants.JSON_FILE_DB, datas)
     print('AANM update done')
+
+
+####### Init logic
+
+# clean up and update mod
+if os.path.isfile('/tmp/ace.zip'):
+    os.remove('/tmp/ace.zip')
+
+if os.path.isdir('/tmp/repo'):
+    shutil.rmtree('/tmp/repo')
+
+# get last ace version
+os.system("cd /home/steam/steamcmd && ./steamcmd.sh +login " + constants.STEAM_USERNAME + " '" + constants.STEAM_PASSWORD + "' +force_install_dir " + constants.INSTALL_DIR + " +workshop_download_item " + constants.ARMA_APPID + " " + constants.ACE_APPID + " validate +quit")
+
+# Zip and checksum it
+aceModPath = '/app/mods/steamapps/workshop/content/'+constants.ARMA_APPID+'/'+constants.ACE_APPID
+shutil.make_archive('/tmp/ace', 'zip', aceModPath)
+aceZipChecksum = getMd5Checksum('/tmp/ace.zip')
+
+if os.path.exists(constants.JSON_FILE_DB):
+    # retrieve data
+    datas = readDatasFromFile(constants.JSON_FILE_DB)
+    # update if needed
+    if datas['ace'] != aceZipChecksum:
+        updatemod(datas, aceZipChecksum)
+else:
+    datas = json.loads('{"ace":"123"}')
+    updatemod(datas, aceZipChecksum)
 
 print('AANM check finished')
