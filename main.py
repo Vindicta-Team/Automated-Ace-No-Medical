@@ -59,7 +59,7 @@ if os.path.isdir('/tmp/repo'):
     shutil.rmtree('/tmp/repo')
 
 aceModPath = '/app/mods/steamapps/workshop/content/'+constants.ARMA_APPID+'/'+constants.ACE_APPID
-if not os.path.exist(aceModPath):
+if not os.path.exists(aceModPath):
     os.makedirs(aceModPath)
 
 # get last ace version
