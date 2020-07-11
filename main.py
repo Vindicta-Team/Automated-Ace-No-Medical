@@ -58,7 +58,7 @@ if os.path.isfile('/tmp/ace.zip'):
 if os.path.isdir('/tmp/repo'):
     shutil.rmtree('/tmp/repo')
 
-aceModPath = '/tmp/mods/steamapps/workshop/content/'+constants.ARMA_APPID+'/'+constants.ACE_APPID
+aceModPath = '/app/mods/steamapps/workshop/content/'+constants.ARMA_APPID+'/'+constants.ACE_APPID
 if not os.path.exists(aceModPath):
     os.makedirs(aceModPath)
 

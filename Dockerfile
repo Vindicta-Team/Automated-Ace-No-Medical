@@ -11,9 +11,9 @@ RUN apt-get -y update && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 # setup steam user
-RUN useradd -m steam
-WORKDIR /home/steam
-USER steam
+# RUN useradd -m steam
+# WORKDIR /home/steam
+# USER steam
 
 RUN pip install gitpython
 RUN git config --global user.email ${GITHUB_EMAIL}
