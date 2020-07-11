@@ -58,11 +58,14 @@ if os.path.isfile('/tmp/ace.zip'):
 if os.path.isdir('/tmp/repo'):
     shutil.rmtree('/tmp/repo')
 
+aceModPath = '/app/mods/steamapps/workshop/content/'+constants.ARMA_APPID+'/'+constants.ACE_APPID
+if not os.path.exist(aceModPath):
+    os.makedirs(aceModPath)
+
 # get last ace version
 os.system("cd /home/steam/steamcmd && ./steamcmd.sh +login " + constants.STEAM_USERNAME + " '" + constants.STEAM_PASSWORD + "' +force_install_dir " + constants.INSTALL_DIR + " +workshop_download_item " + constants.ARMA_APPID + " " + constants.ACE_APPID + " validate +quit")
 
 # Zip and checksum it
-aceModPath = '/app/mods/steamapps/workshop/content/'+constants.ARMA_APPID+'/'+constants.ACE_APPID
 shutil.make_archive('/tmp/ace', 'zip', aceModPath)
 aceZipChecksum = getMd5Checksum('/tmp/ace.zip')
 
