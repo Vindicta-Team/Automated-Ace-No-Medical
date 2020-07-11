@@ -3,6 +3,7 @@ FROM python:3
 ARG GITHUB_EMAIL
 ARG GITHUB_USERNAME
 ARG GITHUB_TOKEN
+ARG USERID
 
 # download steamcmd/git/python requirements
 RUN apt-get -y update && \
@@ -11,9 +12,9 @@ RUN apt-get -y update && \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 # setup steam user
-# RUN useradd -m steam
-# WORKDIR /home/steam
-# USER steam
+RUN useradd -m steam -u ${USERID}
+WORKDIR /home/steam
+USER steam
 
 RUN pip install gitpython
 RUN git config --global user.email ${GITHUB_EMAIL}
