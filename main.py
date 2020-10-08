@@ -29,10 +29,15 @@ def updatemod(datas, aceZipChecksum):
     
     shutil.copytree(aceModPath, '/tmp/repo/AANM', False, None, shutil.copy2, False, True)
 
-    # clean up some files
+    # remove medical files
     medicalFileList = glob.glob('/tmp/repo/AANM/addons/ace_medical*')
     for medicalFilePath in medicalFileList:
         os.remove(medicalFilePath)
+
+    # remove old key
+    fileKeysPath = glob.glob('/tmp/repo/AANM/keys/*')
+    oldest_file = min(fileKeysPath, key=os.path.getctime)
+    os.remove(oldest_file)
     
     # copy mod files
     shutil.copyfile('/app/aanm-files/mod.cpp', '/tmp/repo/AANM/mod.cpp')
