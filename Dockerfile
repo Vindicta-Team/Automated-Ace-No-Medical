@@ -17,6 +17,7 @@ WORKDIR /home/steam
 USER steam
 
 RUN pip install gitpython
+RUN pip install packaging
 RUN git config --global user.email ${GITHUB_EMAIL}
 RUN git config --global user.name ${GITHUB_USERNAME}
 RUN git config --global user.token ${GITHUB_TOKEN}

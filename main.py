@@ -6,6 +6,7 @@ import glob
 import constants
 import datetime
 from git import Repo
+from packaging import version
 
 ####### Functions
 def readDatasFromFile(filePath):
@@ -17,6 +18,33 @@ def writeDatasIntoFile(filePath, datas):
 
 def getMd5Checksum(filePath):
     return hashlib.md5(open(filePath,'rb').read()).hexdigest()
+
+def cleanAllKeys():
+    # remove old root keys
+    fileKeysPath = glob.glob('/tmp/repo/AANM/keys/*')
+    oldest_file = min(fileKeysPath, key=os.path.getctime)
+    os.remove(oldest_file)
+
+    # remove old addons keys
+    allKeys = {}
+    fileKeysPath = glob.glob('/tmp/repo/AANM/addons/*.bisign')
+
+    for fileKeyPath in fileKeysPath:
+        filename = fileKeyPath.replace('/tmp/repo/AANM/addons/', '')
+        filenameSplit = filename.split('.')
+        name = filenameSplit[0]
+        curVersion = filenameSplit[3] + '.' + filenameSplit[4]
+
+        if name in allKeys :
+            if version.parse(allKeys[name]['version']) > version.parse(curVersion) :
+                os.remove(fileKeyPath)
+            else:
+                os.remove(allKeys[name]['filePath'])
+
+        allKeys[name] = {
+            'version' : curVersion,
+            'filePath' : fileKeyPath
+        }
 
 def updatemod(datas, aceZipChecksum):
     # git clone
@@ -34,10 +62,7 @@ def updatemod(datas, aceZipChecksum):
     for medicalFilePath in medicalFileList:
         os.remove(medicalFilePath)
 
-    # remove old key
-    fileKeysPath = glob.glob('/tmp/repo/AANM/keys/*')
-    oldest_file = min(fileKeysPath, key=os.path.getctime)
-    os.remove(oldest_file)
+    cleanAllKeys()
     
     # copy mod files
     shutil.copyfile('/app/aanm-files/mod.cpp', '/tmp/repo/AANM/mod.cpp')
@@ -85,3 +110,4 @@ else:
     updatemod(datas, aceZipChecksum)
 
 print('AANM check finished')
+
