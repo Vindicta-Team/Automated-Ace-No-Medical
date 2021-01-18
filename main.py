@@ -26,30 +26,36 @@ def cleanAllKeys():
     os.remove(oldest_file)
 
     # remove old addons keys
-    allKeys = {}
-    fileKeysPath = glob.glob('/tmp/repo/AANM/addons/*.bisign')
+    allAddonsKeys = {}
+    fileAddonsKeysPath = glob.glob('/tmp/repo/AANM/addons/*.bisign')
 
-    for fileKeyPath in fileKeysPath:
+    for fileKeyPath in fileAddonsKeysPath:
         filename = fileKeyPath.replace('/tmp/repo/AANM/addons/', '')
         filenameSplit = filename.split('.')
         name = filenameSplit[0]
         curVersion = filenameSplit[3] + '.' + filenameSplit[4]
 
-        if name in allKeys :
-            if version.parse(allKeys[name]['version']) > version.parse(curVersion) :
+        if name in allAddonsKeys :
+            if version.parse(allAddonsKeys[name]['version']) > version.parse(curVersion) :
                 os.remove(fileKeyPath)
             else:
-                os.remove(allKeys[name]['filePath'])
+                os.remove(allAddonsKeys[name]['filePath'])
 
-        allKeys[name] = {
+        allAddonsKeys[name] = {
             'version' : curVersion,
             'filePath' : fileKeyPath
         }
+    
+    # remove old optionals addons keys
+    allOptionalsAddonsPath = glob.glob('/tmp/repo/AANM/optionals/*')
+
+    for optionalAddonPath in allOptionalsAddonsPath:
+        fileList = glob.glob(optionalAddonPath + '/addons/*.bisign')
+        oldest_file = min(fileList, key=os.path.getctime)
+        os.remove(oldest_file)
 
 def updatemod(datas, aceZipChecksum):
     # git clone
-    # // https://[USERNAME]:[TOKEN]@[GIT_ENTERPRISE_DOMAIN]/[ORGANIZATION]/[REPO].git
-
     cloned_repo = Repo.clone_from('https:// ' + constants.GITHUB_USERNAME + ':' + constants.GITHUB_TOKEN + '@github.com/Vindicta-Team/Automated-Ace-No-Medical', '/tmp/repo')
 
     if os.path.isdir('/tmp/repo/AANM'):
