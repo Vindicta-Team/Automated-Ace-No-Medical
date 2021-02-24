@@ -68,6 +68,7 @@ def updatemod(datas, aceZipChecksum):
     for medicalFilePath in medicalFileList:
         os.remove(medicalFilePath)
 
+    exit('before clean keys')
     cleanAllKeys()
     
     # copy mod files
@@ -82,7 +83,7 @@ def updatemod(datas, aceZipChecksum):
     # if update done update 
     datas['ace'] = aceZipChecksum
     writeDatasIntoFile(constants.JSON_FILE_DB, datas)
-    print('AANM update done')
+    print('AANM update done \n')
 
 
 ####### Init logic
@@ -102,18 +103,21 @@ if not os.path.exists(aceModPath):
 os.system("cd /home/steam/steamcmd && ./steamcmd.sh +login " + constants.STEAM_USERNAME + " '" + constants.STEAM_PASSWORD + "' +force_install_dir " + constants.INSTALL_DIR + " +workshop_download_item " + constants.ARMA_APPID + " " + constants.ACE_APPID + " validate +quit")
 
 # Zip and checksum it
-shutil.make_archive('/tmp/ace', 'zip', aceModPath)
+result = shutil.make_archive('/tmp/ace', 'zip', aceModPath)
+print(result)
 aceZipChecksum = getMd5Checksum('/tmp/ace.zip')
+print(aceZipChecksum)
+exit('after zip ace')
 
 if os.path.exists(constants.JSON_FILE_DB):
     # retrieve data
     datas = readDatasFromFile(constants.JSON_FILE_DB)
     # update if needed
-    if datas['ace'] != aceZipChecksum:
-        updatemod(datas, aceZipChecksum)
+    # if datas['ace'] != aceZipChecksum:
+    updatemod(datas, aceZipChecksum)
 else:
     datas = json.loads('{"ace":"123"}')
     updatemod(datas, aceZipChecksum)
 
-print('AANM check finished')
+print('AANM check finished \n\n')
 
