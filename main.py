@@ -68,7 +68,6 @@ def updatemod(datas, aceZipChecksum):
     for medicalFilePath in medicalFileList:
         os.remove(medicalFilePath)
 
-    exit('before clean keys')
     cleanAllKeys()
     
     # copy mod files
@@ -104,17 +103,14 @@ os.system("cd /home/steam/steamcmd && ./steamcmd.sh +login " + constants.STEAM_U
 
 # Zip and checksum it
 result = shutil.make_archive('/tmp/ace', 'zip', aceModPath)
-print(result)
 aceZipChecksum = getMd5Checksum('/tmp/ace.zip')
-print(aceZipChecksum)
-exit('after zip ace')
 
 if os.path.exists(constants.JSON_FILE_DB):
     # retrieve data
     datas = readDatasFromFile(constants.JSON_FILE_DB)
     # update if needed
-    # if datas['ace'] != aceZipChecksum:
-    updatemod(datas, aceZipChecksum)
+    if datas['ace'] != aceZipChecksum:
+        updatemod(datas, aceZipChecksum)
 else:
     datas = json.loads('{"ace":"123"}')
     updatemod(datas, aceZipChecksum)
