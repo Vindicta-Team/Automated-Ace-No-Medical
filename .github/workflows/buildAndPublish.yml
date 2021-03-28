@@ -13,8 +13,8 @@ jobs:
         - name: Checkout the code
           uses: actions/checkout@master
     
-        # - name: Build addon
-        #   run: '.\tools\buildAddon.ps1'
+        - name: Build addon
+          run: '.\tools\buildAddon.ps1'
     
         - name: Upload build addon artifact
           uses: actions/upload-artifact@v2

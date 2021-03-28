@@ -22,8 +22,9 @@ def getMd5Checksum(filePath):
 def cleanAllKeys():
     # remove old root keys
     fileKeysPath = glob.glob('/tmp/repo/AANM/keys/*')
-    oldest_file = min(fileKeysPath, key=os.path.getctime)
-    os.remove(oldest_file)
+    if len(fileKeysPath) > 1:
+        oldest_file = min(fileKeysPath, key=os.path.getctime)
+        os.remove(oldest_file)
 
     # remove old addons keys
     allAddonsKeys = {}
@@ -51,8 +52,9 @@ def cleanAllKeys():
 
     for optionalAddonPath in allOptionalsAddonsPath:
         fileList = glob.glob(optionalAddonPath + '/addons/*.bisign')
-        oldest_file = min(fileList, key=os.path.getctime)
-        os.remove(oldest_file)
+        if len(fileList) > 1:
+            oldest_file = min(fileList, key=os.path.getctime)
+            os.remove(oldest_file)
 
 def updatemod(datas, aceZipChecksum):
     # git clone
@@ -75,14 +77,14 @@ def updatemod(datas, aceZipChecksum):
     shutil.copyfile('/app/aanm-files/meta.cpp', '/tmp/repo/AANM/meta.cpp')
 
     # comit files
-    cloned_repo.index.add(['*'])
+    cloned_repo.git.add('*')
     cloned_repo.index.commit("update-" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
     cloned_repo.remotes.origin.push()
 
     # if update done update 
     datas['ace'] = aceZipChecksum
     writeDatasIntoFile(constants.JSON_FILE_DB, datas)
-    print('AANM update done \n')
+    print('\n\n AANM update done')
 
 
 ####### Init logic
@@ -115,5 +117,5 @@ else:
     datas = json.loads('{"ace":"123"}')
     updatemod(datas, aceZipChecksum)
 
-print('AANM check finished \n\n')
+print('\n\n AANM check finished \n\n')
 
