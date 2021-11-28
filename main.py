@@ -69,7 +69,15 @@ def updatemod(datas, aceZipChecksum):
     medicalFileList = glob.glob('/tmp/repo/AANM/addons/ace_medical*')
     for medicalFilePath in medicalFileList:
         os.remove(medicalFilePath)
-
+    
+    # remove other files requiring medical
+    fireFileList = glob.glob('/tmp/repo/AANM/addons/ace_fire*')
+    for fireFilePath in fireFileList:
+        os.remove(fireFilePath)
+    fireFileList = glob.glob('/tmp/repo/AANM/addons/ace_killtracker*')
+    for fireFilePath in fireFileList:
+        os.remove(fireFilePath)
+        
     cleanAllKeys()
     
     # copy mod files
