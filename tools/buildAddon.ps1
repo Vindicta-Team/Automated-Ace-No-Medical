@@ -13,6 +13,7 @@ $version = $versionFile.Substring(4)
 Remove-Item "$PSScriptRoot\..\AANM\keys\ace_*"
 Remove-Item "$PSScriptRoot\..\AANM\aanm.biprivatekey"
 Copy-Item 'aanm.bikey' -Destination "keys\aanm_$version"
+Remove-Item "$PSScriptRoot\..\AANM\aanm.bikey"
 
 Pop-Location
 
