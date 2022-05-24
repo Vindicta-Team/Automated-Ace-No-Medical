@@ -6,6 +6,3 @@ tooltip = "Automated Ace No Medical";
 tooltipOwned = "Automated Ace No Medical";
 overview = "AANM will automatically check every day for a new version of ACE3 and remove the medical module in it.";
 author = "Vindicta Team";
-logo = "AANM.jpg";
-logoOver = "AANM.jpg";
-picture = "AANM.jpg";
